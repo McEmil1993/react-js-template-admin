@@ -1,4 +1,4 @@
-import { Edit2, Trash2, CheckCircle, XCircle, MoreVertical } from 'lucide-react'
+import { Edit2, CheckCircle, XCircle, RotateCcw } from 'lucide-react'
 import Button from './Button'
 import { useState } from 'react'
 
@@ -6,8 +6,8 @@ const Table = ({
   data, 
   columns, 
   onEdit, 
-  onDelete, 
   onStatusChange,
+  onResetPassword,
   showActions = true 
 }) => {
   const [hoveredRow, setHoveredRow] = useState(null)
@@ -28,6 +28,7 @@ const Table = ({
                 <th
                   key={col.key}
                   className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  style={col.width ? { width: col.width } : {}}
                 >
                   {col.label}
                 </th>
@@ -51,6 +52,7 @@ const Table = ({
                   <td
                     key={col.key}
                     className="px-3 md:px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white"
+                    style={col.width ? { width: col.width } : {}}
                   >
                     {col.render ? col.render(item[col.key], item) : item[col.key]}
                   </td>
@@ -59,22 +61,24 @@ const Table = ({
                   <td className="px-3 md:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end gap-2">
                       {onStatusChange && (
-                        <div className="flex gap-1">
-                          <button
-                            onClick={() => handleStatusChange(item, 'active')}
-                            className="p-1.5 rounded hover:bg-green-100 dark:hover:bg-green-900 transition-colors"
-                            title="Set Active"
-                          >
-                            <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
-                          </button>
-                          <button
-                            onClick={() => handleStatusChange(item, 'inactive')}
-                            className="p-1.5 rounded hover:bg-red-100 dark:hover:bg-red-900 transition-colors"
-                            title="Set Inactive"
-                          >
+                        <button
+                          onClick={() => {
+                            const newStatus = item.status === 'active' ? 'inactive' : 'active'
+                            handleStatusChange(item, newStatus)
+                          }}
+                          className={`p-1.5 rounded transition-colors ${
+                            item.status === 'active'
+                              ? 'hover:bg-red-100 dark:hover:bg-red-900'
+                              : 'hover:bg-green-100 dark:hover:bg-green-900'
+                          }`}
+                          title={item.status === 'active' ? 'Set Inactive' : 'Set Active'}
+                        >
+                          {item.status === 'active' ? (
                             <XCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
-                          </button>
-                        </div>
+                          ) : (
+                            <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
+                          )}
+                        </button>
                       )}
                       {onEdit && (
                         <button
@@ -85,13 +89,13 @@ const Table = ({
                           <Edit2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                         </button>
                       )}
-                      {onDelete && (
+                      {onResetPassword && (
                         <button
-                          onClick={() => onDelete(item)}
-                          className="p-1.5 rounded hover:bg-red-100 dark:hover:bg-red-900 transition-colors"
-                          title="Delete"
+                          onClick={() => onResetPassword(item)}
+                          className="p-1.5 rounded hover:bg-purple-100 dark:hover:bg-purple-900 transition-colors"
+                          title="Reset Password"
                         >
-                          <Trash2 className="w-4 h-4 text-red-600 dark:text-red-400" />
+                          <RotateCcw className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                         </button>
                       )}
                     </div>

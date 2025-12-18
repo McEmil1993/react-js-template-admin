@@ -1,9 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Image as ImageIcon, Download, Eye } from 'lucide-react'
 import Modal from '../components/Modal'
+import SkeletonImageGrid from '../components/SkeletonImageGrid'
+import Skeleton from '../components/Skeleton'
 
 const Images = () => {
+  const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(null)
+
+  useEffect(() => {
+    // Simulate loading for 1 second
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const images = [
     { id: 1, url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', title: 'Mountain Landscape' },
@@ -13,6 +25,19 @@ const Images = () => {
     { id: 5, url: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400', title: 'Sunset' },
     { id: 6, url: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400', title: 'Aurora' },
   ]
+
+  if (loading) {
+    return (
+      <div className="p-4 md:p-6 space-y-4 md:space-y-6">
+        <div>
+          <Skeleton variant="title" className="h-8 w-48 mb-2" />
+          <Skeleton variant="text" className="h-4 w-64" />
+        </div>
+
+        <SkeletonImageGrid count={8} />
+      </div>
+    )
+  }
 
   return (
     <div className="p-4 md:p-6 space-y-4 md:space-y-6">

@@ -1,8 +1,23 @@
+import { useState, useEffect } from 'react'
 import { Users, DollarSign, ShoppingCart, TrendingUp } from 'lucide-react'
 import Widget from '../components/Widget'
+import SkeletonCard from '../components/SkeletonCard'
+import SkeletonChart from '../components/SkeletonChart'
+import Skeleton from '../components/Skeleton'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 
 const Dashboard = () => {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Simulate loading for 1 second
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   const salesData = [
     { name: 'Jan', sales: 4000, revenue: 2400 },
     { name: 'Feb', sales: 3000, revenue: 1398 },
@@ -20,6 +35,29 @@ const Dashboard = () => {
   ]
 
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444']
+
+  if (loading) {
+    return (
+      <div className="p-4 md:p-6 space-y-4 md:space-y-6">
+        <div>
+          <Skeleton variant="title" className="h-8 w-48 mb-2" />
+          <Skeleton variant="text" className="h-4 w-64" />
+        </div>
+
+        {/* Skeleton Widgets */}
+        <SkeletonCard count={4} />
+
+        {/* Skeleton Charts */}
+        <SkeletonChart count={2} />
+
+        {/* Skeleton Pie Chart */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 md:p-6 border border-gray-200 dark:border-gray-700">
+          <Skeleton variant="heading" className="h-6 w-48 mb-4" />
+          <Skeleton variant="card" className="h-64 w-full" />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="p-4 md:p-6 space-y-4 md:space-y-6">

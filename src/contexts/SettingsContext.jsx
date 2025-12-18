@@ -17,6 +17,15 @@ export const SettingsProvider = ({ children }) => {
     fontSize: '16px',
     sideNavColor: '#1e293b',
     topNavColor: '#ffffff',
+    sideNavFontColor: '#e2e8f0',
+    sideNavHoverColor: '#ffffff',
+    sideNavActiveColor: '#ffffff',
+    topNavFontColor: '#1f2937',
+    loginBackgroundType: 'color', // 'color' or 'image'
+    loginBackgroundColor: '#e0e7ff', // Default gradient start color
+    loginBackgroundImage: '',
+    loginFormBgColor: '#ffffff', // Login form card background color
+    loginFormBgOpacity: 100, // Opacity percentage (0-100)
   })
 
   useEffect(() => {

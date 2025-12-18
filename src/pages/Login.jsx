@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { useSettings } from '../contexts/SettingsContext'
 import Button from '../components/Button'
 import { LogIn } from 'lucide-react'
 
@@ -10,7 +11,42 @@ const Login = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { login } = useAuth()
+  const { settings } = useSettings()
   const navigate = useNavigate()
+
+  // Get login background style
+  const getLoginBackgroundStyle = () => {
+    if (settings.loginBackgroundType === 'image' && settings.loginBackgroundImage) {
+      return {
+        backgroundImage: `url(${settings.loginBackgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }
+    } else {
+      return {
+        backgroundColor: settings.loginBackgroundColor || '#e0e7ff',
+      }
+    }
+  }
+
+  // Get login form card style
+  const getLoginFormStyle = () => {
+    const opacity = (settings.loginFormBgOpacity !== undefined ? settings.loginFormBgOpacity : 100) / 100
+    const bgColor = settings.loginFormBgColor || '#ffffff'
+    
+    // Convert hex to rgba for opacity support
+    const hexToRgba = (hex, alpha) => {
+      const r = parseInt(hex.slice(1, 3), 16)
+      const g = parseInt(hex.slice(3, 5), 16)
+      const b = parseInt(hex.slice(5, 7), 16)
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`
+    }
+    
+    return {
+      backgroundColor: hexToRgba(bgColor, opacity),
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -30,8 +66,14 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8 w-full max-w-md">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 transition-all duration-300"
+      style={getLoginBackgroundStyle()}
+    >
+      <div 
+        className="rounded-2xl shadow-2xl p-6 md:p-8 w-full max-w-md transition-all duration-300"
+        style={getLoginFormStyle()}
+      >
         <div className="text-center mb-6 md:mb-8">
           <div className="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-blue-600 rounded-full mb-4">
             <LogIn className="w-7 h-7 md:w-8 md:h-8 text-white" />

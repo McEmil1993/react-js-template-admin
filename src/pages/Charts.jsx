@@ -1,6 +1,20 @@
+import { useState, useEffect } from 'react'
 import { AreaChart, Area, LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
+import SkeletonChart from '../components/SkeletonChart'
+import Skeleton from '../components/Skeleton'
 
 const Charts = () => {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Simulate loading for 1 second
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   const salesData = [
     { name: 'Jan', sales: 4000, revenue: 2400, profit: 1600 },
     { name: 'Feb', sales: 3000, revenue: 1398, profit: 1002 },
@@ -18,6 +32,20 @@ const Charts = () => {
     { subject: 'Magic', A: 85, B: 90, fullMark: 150 },
     { subject: 'Stamina', A: 65, B: 85, fullMark: 150 },
   ]
+
+  if (loading) {
+    return (
+      <div className="p-4 md:p-6 space-y-4 md:space-y-6">
+        <div>
+          <Skeleton variant="title" className="h-8 w-64 mb-2" />
+          <Skeleton variant="text" className="h-4 w-80" />
+        </div>
+
+        <SkeletonChart count={2} />
+        <SkeletonChart count={2} />
+      </div>
+    )
+  }
 
   return (
     <div className="p-4 md:p-6 space-y-4 md:space-y-6">

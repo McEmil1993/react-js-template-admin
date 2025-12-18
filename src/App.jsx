@@ -8,6 +8,7 @@ import Tables from './pages/Tables'
 import Images from './pages/Images'
 import Charts from './pages/Charts'
 import Settings from './pages/Settings'
+import Profile from './pages/Profile'
 import TopNav from './components/TopNav'
 import SideNav from './components/SideNav'
 import Footer from './components/Footer'
@@ -56,14 +57,23 @@ const Layout = ({ children }) => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900 overflow-hidden">
       <SideNav isOpen={isMobileMenuOpen} onClose={closeMobileMenu} />
-      <div className="flex-1 flex flex-col w-full lg:ml-0">
-        <TopNav onMenuClick={toggleMobileMenu} />
-        <main className="flex-1 overflow-y-auto">
+      <div className="flex-1 flex flex-col w-full lg:ml-64 h-screen overflow-hidden relative">
+        {/* Fixed TopNav */}
+        <div className="fixed top-0 right-0 left-0 lg:left-64 z-30">
+          <TopNav onMenuClick={toggleMobileMenu} />
+        </div>
+        
+        {/* Scrollable Main Content */}
+        <main className="flex-1 overflow-y-auto pt-16 pb-20">
           {children}
         </main>
-        <Footer />
+        
+        {/* Fixed Footer */}
+        <div className="fixed bottom-0 right-0 left-0 lg:left-64 z-30">
+          <Footer />
+        </div>
       </div>
     </div>
   )
@@ -122,6 +132,16 @@ function App() {
                 <ProtectedRoute>
                   <Layout>
                     <Settings />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Profile />
                   </Layout>
                 </ProtectedRoute>
               }
