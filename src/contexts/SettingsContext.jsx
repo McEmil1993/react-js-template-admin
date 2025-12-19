@@ -10,44 +10,56 @@ export const useSettings = () => {
   return context
 }
 
+// Default settings
+const defaultSettings = {
+  darkMode: false,
+  fontFamily: 'Poppins',
+  fontSize: '12px',
+  sideNavColor: '#1e293b',
+  topNavColor: '#ffffff',
+  sideNavFontColor: '#e2e8f0',
+  sideNavHoverColor: '#ffffff',
+  sideNavActiveColor: '#ffffff',
+  topNavFontColor: '#1f2937',
+  loginBackgroundType: 'color',
+  loginBackgroundColor: '#d6d6d6',
+  loginBackgroundImage: '',
+  loginFormBgColor: '#ffffff',
+  loginFormBgOpacity: 89,
+}
+
 export const SettingsProvider = ({ children }) => {
-  const [settings, setSettings] = useState({
-    darkMode: false,
-    fontFamily: 'Inter',
-    fontSize: '16px',
-    sideNavColor: '#1e293b',
-    topNavColor: '#ffffff',
-    sideNavFontColor: '#e2e8f0',
-    sideNavHoverColor: '#ffffff',
-    sideNavActiveColor: '#ffffff',
-    topNavFontColor: '#1f2937',
-    loginBackgroundType: 'color', // 'color' or 'image'
-    loginBackgroundColor: '#e0e7ff', // Default gradient start color
-    loginBackgroundImage: '',
-    loginFormBgColor: '#ffffff', // Login form card background color
-    loginFormBgOpacity: 100, // Opacity percentage (0-100)
-  })
+
+  const [settings, setSettings] = useState(defaultSettings)
 
   useEffect(() => {
-    // Load settings from localStorage
+    // Check if appSettings exists in localStorage
     const savedSettings = localStorage.getItem('appSettings')
-    if (savedSettings) {
-      const parsed = JSON.parse(savedSettings)
-      setSettings(parsed)
-      
-      // Apply dark mode
-      if (parsed.darkMode) {
-        document.documentElement.classList.add('dark')
-      } else {
-        document.documentElement.classList.remove('dark')
-      }
-      
-      // Apply font family
-      document.documentElement.style.setProperty('--font-family', parsed.fontFamily)
-      
-      // Apply font size
-      document.documentElement.style.fontSize = parsed.fontSize
+    let currentSettings = defaultSettings
+    
+    if (!savedSettings) {
+      // If no settings exist, set default values to localStorage
+      localStorage.setItem('appSettings', JSON.stringify(defaultSettings))
+      setSettings(defaultSettings)
+    } else {
+      // Load existing settings from localStorage
+      currentSettings = JSON.parse(savedSettings)
+      setSettings(currentSettings)
     }
+    
+    // Apply settings to document
+    // Apply dark mode
+    if (currentSettings.darkMode) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    
+    // Apply font family
+    document.documentElement.style.setProperty('--font-family', currentSettings.fontFamily)
+    
+    // Apply font size
+    document.documentElement.style.fontSize = currentSettings.fontSize
   }, [])
 
   const updateSettings = (newSettings) => {
