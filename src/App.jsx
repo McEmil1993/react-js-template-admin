@@ -5,6 +5,7 @@ import { SettingsProvider } from './contexts/SettingsContext'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Tables from './pages/Tables'
+import Students from './pages/Students'
 import Images from './pages/Images'
 import Charts from './pages/Charts'
 import Settings from './pages/Settings'
@@ -102,6 +103,16 @@ function App() {
                 <ProtectedRoute>
                   <Layout>
                     <Tables />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/students"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Students />
                   </Layout>
                 </ProtectedRoute>
               }

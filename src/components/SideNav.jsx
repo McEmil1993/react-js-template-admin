@@ -5,6 +5,7 @@ import {
   Settings, 
   Image as ImageIcon,
   BarChart3,
+  GraduationCap,
   X
 } from 'lucide-react'
 import { useSettings } from '../contexts/SettingsContext'
@@ -16,6 +17,7 @@ const SideNav = ({ isOpen, onClose }) => {
   const navItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/tables', icon: Table, label: 'Tables' },
+    { path: '/students', icon: GraduationCap, label: 'Students' },
     { path: '/images', icon: ImageIcon, label: 'Images' },
     { path: '/charts', icon: BarChart3, label: 'Charts' },
     { path: '/settings', icon: Settings, label: 'Settings' },
